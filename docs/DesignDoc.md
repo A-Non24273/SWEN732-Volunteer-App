@@ -2,7 +2,7 @@
 # PROJECT Design Documentation
 
 ## Team Information
-* Team name: TEAMNAME
+* Team name: Helping Hands
 * Team members
   * Gauri Shedge
   * Catherine Roe
