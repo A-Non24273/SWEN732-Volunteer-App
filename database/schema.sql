@@ -1,6 +1,3 @@
--- User Role
-CREATE TYPE roles AS ENUM ('volunteer', 'requester');
-
 -- Listing status
 CREATE TYPE listing_status AS ENUM (
     'open',
@@ -21,7 +18,6 @@ CREATE TABLE users (
     id int PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     password_hash TEXT NOT NULL,
-    role roles NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -50,7 +46,7 @@ CREATE TABLE volunteer_listings (
     applied_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (user_id, listing_id),
-    
+
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
 );
