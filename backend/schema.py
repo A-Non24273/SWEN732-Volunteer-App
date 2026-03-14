@@ -1,0 +1,100 @@
+# Ported schema.sql to use SQLAlchemy
+
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Enum
+
+db = SQLAlchemy()
+
+listing_status = Enum(
+    "open",
+    "cancelled",
+    "completed",
+    name="listing_status"
+)
+
+application_status = Enum(
+    "pending",
+    "approved",
+    "rejected",
+    "withdrawn",
+    name="application_status"
+)
+
+
+class User(db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), nullable=False)
+    password_hash = db.Column(db.Text, nullable=False)
+    created_at = db.Column(
+        db.TIMESTAMP,
+        nullable=False,
+        server_default=db.func.current_timestamp()
+    )
+
+
+class Listing(db.Model):
+    __tablename__ = "listings"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    requester_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False
+    )
+
+    title = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    location = db.Column(db.String(255))
+
+    event_date = db.Column(db.Date, nullable=False)
+    start_time = db.Column(db.Time)
+    end_time = db.Column(db.Time)
+
+    status = db.Column(
+        listing_status,
+        nullable=False,
+        server_default="open"
+    )
+
+    created_at = db.Column(
+        db.TIMESTAMP,
+        nullable=False,
+        server_default=db.func.current_timestamp()
+    )
+
+    updated_at = db.Column(
+        db.TIMESTAMP,
+        nullable=False,
+        server_default=db.func.current_timestamp()
+    )
+
+
+class VolunteerListing(db.Model):
+    __tablename__ = "volunteer_listings"
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id", ondelete="CASCADE"),
+        primary_key=True
+    )
+
+    listing_id = db.Column(
+        db.Integer,
+        db.ForeignKey("listings.id", ondelete="CASCADE"),
+        primary_key=True
+    )
+
+    status = db.Column(
+        application_status,
+        nullable=False,
+        server_default="pending"
+    )
+
+    applied_at = db.Column(
+        db.TIMESTAMP,
+        nullable=False,
+        server_default=db.func.current_timestamp()
+    )

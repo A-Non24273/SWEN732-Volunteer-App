@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS listings (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (requester_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (requester_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Volunteer to Listings join/junction table
@@ -48,5 +48,5 @@ CREATE TABLE IF NOT EXISTS volunteer_listings (
     PRIMARY KEY (user_id, listing_id),
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
+    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
 );
