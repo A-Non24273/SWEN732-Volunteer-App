@@ -1,12 +1,12 @@
 -- Listing status
-CREATE TYPE listing_status AS ENUM (
+CREATE TYPE IF NOT EXISTS listing_status AS ENUM (
     'open',
     'cancelled',
     'completed'
 );
 
 -- Application status
-CREATE TYPE application_status AS ENUM (
+CREATE TYPE IF NOT EXISTS application_status AS ENUM (
     'pending',
     'approved',
     'rejected',
@@ -14,7 +14,7 @@ CREATE TYPE application_status AS ENUM (
 );
 
 -- Users table
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id int PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     password_hash TEXT NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE users (
 );
 
 -- Listings table
-CREATE TABLE listings (
+CREATE TABLE IF NOT EXISTS listings (
     id int PRIMARY KEY,
     requester_id INT NOT NULL,
     title VARCHAR(50) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE listings (
 );
 
 -- Volunteer to Listings join/junction table
-CREATE TABLE volunteer_listings (
+CREATE TABLE IF NOT EXISTS volunteer_listings (
     user_id INT NOT NULL,
     listing_id INT NOT NULL,
     status application_status NOT NULL DEFAULT 'pending',
