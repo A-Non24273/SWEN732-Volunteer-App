@@ -6,22 +6,27 @@ import os
 
 from schema import db
 
-load_dotenv()
+def create_app():
 
-app = Flask(__name__)
-CORS(app)
+    load_dotenv()
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app = Flask(__name__)
+    CORS(app)
 
-db.init_app(app)
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-@app.route("/")
-def home():
-    return {"message": "Flask connected to PostgreSQL successfully"}
+    db.init_app(app)
 
+    @app.route("/")
+    def home():
+        return {"message": "Flask connected to PostgreSQL successfully"}
+
+    return app
 
 if __name__ == "__main__":
+    app = create_app()
+    
     with app.app_context():
         db.create_all()
     
