@@ -12,6 +12,8 @@ import os
 from schema import User, db, Listing
 
 format_pattern = "%d %B, %Y, %H:%M:%S" # for datetimes
+login_manager = LoginManager()
+
 
 def create_app():
     load_dotenv()
@@ -21,8 +23,17 @@ def create_app():
 
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret")
 
     db.init_app(app)
+    
+    login_manager.init_app(app)
+    login_manager.login_view = "/login"
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
 
     @app.route("/")
     def home():
@@ -44,8 +55,8 @@ def create_app():
         
         return jsonify({"message": "Login successful", "user_id": user.id}), 200
     
-    @login_required
     @app.route("/logout", methods=["POST"])
+    @login_required
     def logout():
         logout_user()
         return jsonify({"message": "Logout successful"}), 200
@@ -70,8 +81,8 @@ def create_app():
 
         return jsonify({"message": "User registered successfully", "user_id": new_user.id}), 201
     
-    @login_required
     @app.route("/listing", methods=["POST"])
+    @login_required
     def post_listing():
         data = request.get_json()
 
@@ -99,22 +110,10 @@ def create_app():
         return jsonify({"message": "Listing posted successfully", "listing_id": new_listing.id}), 201
     
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        # flask uses this to return the current user
-        return User.query.get(int(user_id))
-
     return app
 
 if __name__ == "__main__":
     app = create_app()
-
-    # Initialize the login manager
-    login_manager = LoginManager()
-    login_manager.init_app(app)
-
-    # Redirect unauthorized users to the login page
-    login_manager.login_view = '/login'
     
     with app.app_context():
         db.create_all()
