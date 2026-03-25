@@ -49,9 +49,8 @@ class Listing(db.Model):
     description = db.Column(db.Text, nullable=False)
     location = db.Column(db.String(255))
 
-    event_date = db.Column(db.Date, nullable=False)
-    start_time = db.Column(db.Time)
-    end_time = db.Column(db.Time)
+    start_time = db.Column(db.DateTime)
+    end_time = db.Column(db.DateTime)
 
     status = db.Column(
         listing_status,

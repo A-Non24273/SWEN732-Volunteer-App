@@ -43,7 +43,6 @@ def test_schema(app):
             "title",
             "description",
             "location",
-            "event_date",
             "start_time",
             "end_time",
             "status",
