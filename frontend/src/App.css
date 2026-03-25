@@ -1,38 +1,81 @@
-.App {
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+
+  background: linear-gradient(135deg, #43cea2, #185a9d);
+  min-height: 100vh;
+}
+
+.container {
+  width: 340px;
+  margin: 80px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.app-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: #185a9d;
+  margin-bottom: 5px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.tagline {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 15px;
+  text-align: center; 
+  width: 100%; 
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+input {
+  width: 92%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #43cea2;
   color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  width: 100%;
+  font-weight: bold;
 }
 
-.App-link {
-  color: #61dafb;
+button:hover {
+  background-color: #25acc1;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.link {
+  color: #185a9d;
+  cursor: pointer;
+  margin-top: 12px;
+  display: block;
+  font-size: 14px;
+}
+
+.message {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
 }
