@@ -109,7 +109,7 @@ def create_app():
         db.session.commit()
         return jsonify({"message": "Listing posted successfully", "listing_id": new_listing.id}), 201
     
-    @app.route("/listings", methods=["GET"])
+    @app.route("/listing", methods=["GET"])
     @login_required
     def get_listing():
         data = request.get_json()
