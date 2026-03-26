@@ -109,6 +109,23 @@ def create_app():
         db.session.commit()
         return jsonify({"message": "Listing posted successfully", "listing_id": new_listing.id}), 201
     
+    @app.route("/listing", methods=["GET"])
+    @login_required
+    def get_listing():
+        data = request.get_json()
+
+        listing_id = data.get("id")
+
+        if not listing_id:
+            return {"error": "listing id is required"}, 400
+        
+        listing = db.session.get(Listing, listing_id)
+
+        if not listing:
+            return {"error": "listing does not exist"}, 400
+        
+        return jsonify(listing.to_dict()), 200
+
 
     return app
 

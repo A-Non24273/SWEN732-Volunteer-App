@@ -55,3 +55,46 @@ def test_listing_create(client, app):
         data = listing_response.get_json()
         assert data["message"] == "Listing posted successfully"
         assert "listing_id" in data
+
+def test_listing_get(client, app):
+    """
+    Test creating a listing as a logged in user
+    """
+    from schema import User, Listing
+    with app.app_context():
+        # First, create a user to log in with
+        user = User(username="bob", password_hash="password456")
+        db.session.add(user)
+        db.session.commit()
+    
+        # Now attempt to log in
+        login_response = client.post(
+            "/login",
+            json={"username": "bob", "password": "password456"}
+        )
+
+        # Now create a listing
+        listing_response = client.post(
+            "/listing",
+            json={
+                "title": "Test Listing",
+                "description": "A listing that is a test",
+                "location": "somewhere in the back of my mind",
+                "start_time": "21 April, 2026, 10:30:00",
+                "end_time": "21 April, 2026, 11:30:00"
+            }
+        )
+        data = listing_response.get_json()
+        listing_id = data.get("listing_id")
+        
+        # now get the listing
+        get_response = client.get(
+            "/listing",
+            json={
+                "id": listing_id
+            }
+        )
+        data = get_response.get_json()
+        assert get_response.status_code == 200
+        assert data.get("id") == listing_id
+        assert data.get("title") == "Test Listing"

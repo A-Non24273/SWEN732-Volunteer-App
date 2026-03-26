@@ -71,6 +71,22 @@ class Listing(db.Model):
         server_default=db.func.current_timestamp()
     )
 
+    def to_dict(self):
+        """
+            Converts the listing to a dict
+        """
+        return {
+            "id": self.id,
+            "requester_id": self.requester_id,
+            "title": self.title,
+            "description": self.description,
+            "location": self.location,
+            "start_time": self.start_time.isoformat(),
+            "end_time": self.end_time.isoformat(),
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None
+        }
+
 
 class VolunteerListing(db.Model):
     __tablename__ = "volunteer_listings"
