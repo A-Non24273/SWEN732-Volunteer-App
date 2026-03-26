@@ -28,9 +28,8 @@ CREATE TABLE IF NOT EXISTS listings (
     title VARCHAR(50) NOT NULL,
     description TEXT NOT NULL,
     location VARCHAR(255),
-    event_date DATE NOT NULL,
-    start_time TIME,
-    end_time TIME,
+    start_time DATETIME,
+    end_time DATETIME,
     status listing_status NOT NULL DEFAULT 'open',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -40,7 +39,7 @@ CREATE TABLE IF NOT EXISTS listings (
 
 -- Volunteer to Listings join/junction table
 CREATE TABLE IF NOT EXISTS volunteer_listings (
-    user_id INT NOT NULL,
+    user_id INT NOT NULL, -- volunteer id
     listing_id INT NOT NULL,
     status application_status NOT NULL DEFAULT 'pending',
     applied_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
