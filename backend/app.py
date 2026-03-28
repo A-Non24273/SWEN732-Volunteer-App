@@ -126,8 +126,20 @@ def create_app():
         
         return jsonify(listing.to_dict()), 200
 
+    @app.route("/listings", methods=["GET"])
+    @login_required
+    def get_listings_by_status():
+        """Retreives all listings from given listing status"""
+        data = request.get_json()
+        
+        status = data.get("status")
+        
+        listings = db.session.query(Listing).filter(Listing.status == status).all()
+
+        return jsonify([listing.to_dict() for listing in listings]), 200
 
     return app
+        
 
 if __name__ == "__main__":
     app = create_app()
