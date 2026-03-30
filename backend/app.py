@@ -9,7 +9,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
-from schema import User, db, Listing
+from schema import User, db, Listing, listing_status
 
 format_pattern = "%d %B, %Y, %H:%M:%S" # for datetimes
 login_manager = LoginManager()
@@ -125,9 +125,55 @@ def create_app():
             return {"error": "listing does not exist"}, 400
         
         return jsonify(listing.to_dict()), 200
+    
+    @app.route("/listing", methods=["PUT"])
+    @login_required
+    def update_listing():
+        data = request.get_json()
+        
+        listing_id = data.get("listing_id")
+        user_id = current_user.id
+        
+        if not listing_id:
+            return {"error": "listing id is required"}, 400
+        
+        # Check if the user owns the listing
+        listing = db.session.get(Listing, listing_id)
+        
+        if listing.requester_id != user_id:
+            return {"error": "user does not own this request"}, 401
+        
+        # Update the listing
+        new_listing_data = {
+            "title": data.get("title", listing.title),
+            "description": data.get("description", listing.description),
+            "location": data.get("location", listing.location),
+            "start_time": datetime.strptime(data.get("start_time"), format_pattern) if data.get("start_time") else listing.start_time,
+            "end_time": datetime.strptime(data.get("end_time"), format_pattern) if data.get("end_time") else listing.end_time,
+            "status": data.get("status") if data.get("status") else listing.status,
+            "updated_at": datetime.utcnow()
+        }
+        db.session.query(Listing).filter(Listing.id == listing_id).update(new_listing_data)
+        db.session.commit()
+        
+        return {"message": "Listing updated successfully"}, 200
 
+    @app.route("/listings", methods=["GET"])
+    @login_required
+    def get_listings_by_status():
+        """
+        Retreives all listings from given listing status
+        """
+        data = request.get_json()
+        
+        status = data.get("status")
+        
+        listings = db.session.query(Listing).filter(Listing.status == status).all()
+
+        return jsonify([listing.to_dict() for listing in listings]), 200
 
     return app
+        
 
 if __name__ == "__main__":
     app = create_app()
