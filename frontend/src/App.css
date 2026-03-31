@@ -79,3 +79,131 @@ button:hover {
   background-color: #f8d7da;
   color: #721c24;
 }
+
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;   /* space between buttons */
+  margin-top: 20px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 12px;
+  text-align: left;
+  background: #f9f9f9;
+}
+
+.card h3 {
+  margin: 0;
+  color: #185a9d;
+}
+
+.card button {
+  margin-top: 8px;
+  margin-right: 8px;
+  width: auto;
+}
+
+/* HEADER */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.header-left {
+  font-weight: bold;
+}
+
+.header-center {
+  display: flex;
+  gap: 30px;
+}
+
+.header-center span {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.header-right button {
+  margin-right: 100%;
+  width: auto;
+  padding: 6px 12px;
+}
+
+/* PAGE SPACING */
+.page {
+  margin-top: 80px;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.header-left {
+  font-weight: bold;
+}
+
+.header-center {
+  display: flex;
+  gap: 40px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header-right {
+  margin-left: auto;
+}
+
+.header-right button {
+  width: auto;
+  padding: 6px 14px;
+}
+
+
+/* BUTTON GROUP */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* BACK BUTTON */
+.back-btn {
+  width: auto;
+  margin-bottom: 15px;
+  background: #185a9d;
+}
+
+/* REQUEST CARD */
+.card {
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 12px;
+  text-align: left;
+  background: #f9f9f9;
+}
+
+

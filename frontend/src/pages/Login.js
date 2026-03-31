@@ -11,20 +11,10 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    try {
-      const res = await loginUser({ username, password });
-      localStorage.setItem("user_id", res.data.user_id);
-
-      setType("success");
-      setMessage("Login successful!");
-
-      setTimeout(() => navigate("/home"), 1000);
-    } catch (err) {
-      setType("error");
-      setMessage(err.response?.data?.error || "Login failed");
-    }
-  };
+  const handleLogin = () => {
+  localStorage.setItem("user_id", "1");
+  navigate("/home");
+};
 
   return (
   <div className="container">

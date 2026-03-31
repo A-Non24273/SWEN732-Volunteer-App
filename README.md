@@ -36,7 +36,7 @@ http://localhost:3000
 
 ---
 
-## Database Setup
+## Database Setup:
 
 Create PostgreSQL database:
 
