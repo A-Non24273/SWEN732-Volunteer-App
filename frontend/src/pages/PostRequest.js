@@ -28,14 +28,13 @@ function PostRequest() {
     const newRequest = {
       id: Date.now(),
       ...form,
-      createdBy: userId // ✅ ownership added
+      createdBy: userId
     };
 
     localStorage.setItem("requests", JSON.stringify([...existing, newRequest]));
 
     alert("Request Posted!");
 
-    // ✅ reset form correctly
     setForm({
       title: "",
       description: "",
@@ -94,38 +93,54 @@ function PostRequest() {
             required
           />
 
+          {/* ✅ DATE FIELDS WITH LABELS */}
           <div className="row">
-            <input
-              type="date"
-              name="startDate"
-              value={form.startDate}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="date"
-              name="endDate"
-              value={form.endDate}
-              onChange={handleChange}
-              required
-            />
+            <div className="field">
+              <label>Start Date</label>
+              <input
+                type="date"
+                name="startDate"
+                value={form.startDate}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="field">
+              <label>End Date</label>
+              <input
+                type="date"
+                name="endDate"
+                value={form.endDate}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
 
+          {/* ✅ TIME FIELDS WITH LABELS */}
           <div className="row">
-            <input
-              type="time"
-              name="startTime"
-              value={form.startTime}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="time"
-              name="endTime"
-              value={form.endTime}
-              onChange={handleChange}
-              required
-            />
+            <div className="field">
+              <label>Start Time</label>
+              <input
+                type="time"
+                name="startTime"
+                value={form.startTime}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="field">
+              <label>End Time</label>
+              <input
+                type="time"
+                name="endTime"
+                value={form.endTime}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
 
           <textarea

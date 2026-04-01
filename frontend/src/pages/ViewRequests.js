@@ -129,34 +129,50 @@ function ViewRequests() {
                         onChange={handleEditChange}
                       />
 
+                      {/* ✅ DATE LABELS */}
                       <div className="row">
-                        <input
-                          type="date"
-                          name="startDate"
-                          value={editForm.startDate}
-                          onChange={handleEditChange}
-                        />
-                        <input
-                          type="date"
-                          name="endDate"
-                          value={editForm.endDate}
-                          onChange={handleEditChange}
-                        />
+                        <div className="field">
+                          <label>Start Date</label>
+                          <input
+                            type="date"
+                            name="startDate"
+                            value={editForm.startDate}
+                            onChange={handleEditChange}
+                          />
+                        </div>
+
+                        <div className="field">
+                          <label>End Date</label>
+                          <input
+                            type="date"
+                            name="endDate"
+                            value={editForm.endDate}
+                            onChange={handleEditChange}
+                          />
+                        </div>
                       </div>
 
+                      {/* ✅ TIME LABELS */}
                       <div className="row">
-                        <input
-                          type="time"
-                          name="startTime"
-                          value={editForm.startTime}
-                          onChange={handleEditChange}
-                        />
-                        <input
-                          type="time"
-                          name="endTime"
-                          value={editForm.endTime}
-                          onChange={handleEditChange}
-                        />
+                        <div className="field">
+                          <label>Start Time</label>
+                          <input
+                            type="time"
+                            name="startTime"
+                            value={editForm.startTime}
+                            onChange={handleEditChange}
+                          />
+                        </div>
+
+                        <div className="field">
+                          <label>End Time</label>
+                          <input
+                            type="time"
+                            name="endTime"
+                            value={editForm.endTime}
+                            onChange={handleEditChange}
+                          />
+                        </div>
                       </div>
 
                       <textarea
@@ -188,7 +204,7 @@ function ViewRequests() {
                         <b>📅 End:</b> {req.endDate} at {req.endTime}
                       </p>
 
-                      {/* ✅ SHOW BUTTONS ONLY FOR OWNER */}
+                      {/* ✅ ONLY OWNER CAN SEE BUTTONS */}
                       {req.createdBy === userId && (
                         <div className="card-buttons">
                           <button
