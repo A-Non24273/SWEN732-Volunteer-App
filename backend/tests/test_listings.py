@@ -221,9 +221,38 @@ def test_get_listings_by_status_open(client, app):
         
         data = get_response.get_json()
         
-        print(data)
-        
         assert get_response.status_code == 200
         assert len(data) == 1
         assert data[0].get("id") == 1
         assert data[0].get("status") == "open"
+
+def test_user_change_listing_not_owner(client, app):
+    """
+    Test to check if user tries editing a listing they do not own returns an error
+    """
+    from schema import User, Listing
+    with app.app_context():
+        # First, create users and listing to test with
+        user = User(username="bob", password_hash="password456")
+        user2 = User(username="bill", password_hash="password123")
+        listing = Listing(requester_id=2, title="test", description="test", location="test", start_time="21 April, 2026, 10:30:00", end_time="21 April, 2026, 11:30:00")
+        db.session.add(user)
+        db.session.add(user2)
+        db.session.commit()
+        db.session.add(listing)
+        db.session.commit()
+    
+        # login as first user
+        login_response = client.post(
+            "/login",
+            json={"username": "bob", "password": "password456"}
+        )
+
+        # Try to edit the second user's listing
+        update_response = client.put(
+            "/listing",
+            json={"listing_id": 1,
+                  "status": "cancelled"}
+        )
+
+        assert update_response.status_code == 401
