@@ -14,6 +14,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/about" element={<About />} />
 
         {/* NEW PAGES */}
         <Route path="/post" element={<PostRequest />} />

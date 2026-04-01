@@ -9,10 +9,14 @@ function ViewRequests() {
   const [requests, setRequests] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({
+    id: "",
     title: "",
     description: "",
     location: "",
-    date: ""
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: ""
   });
 
   useEffect(() => {
@@ -58,7 +62,9 @@ function ViewRequests() {
 
         <div className="header-center">
           <span onClick={() => navigate("/home")}>Home</span>
-          <span>About Us</span>
+
+            <span onClick={() => navigate("/about")}>About Us</span>
+         
           <span>Contact Us</span>
         </div>
 
@@ -68,45 +74,125 @@ function ViewRequests() {
       </div>
 
       {/* PAGE */}
-      <div className="container page">
-        <button className="back-btn" onClick={() => navigate("/home")}>
-          ← Back
-        </button>
+      <div className="page">
+        <div className="max-w-6xl mx-auto">
 
-        <div className="app-title">My Requests</div>
+          <button
+            className="back-btn"
+            onClick={() => navigate("/home")}
+          >
+            ← Back
+          </button>
 
-        {requests.length === 0 ? (
-          <p>No requests yet</p>
-        ) : (
-          requests.map((req) => (
-            <div key={req.id} className="card">
-              {editingId === req.id ? (
-                <>
-                  <input name="title" value={editForm.title} onChange={handleEditChange} />
-                  <input name="location" value={editForm.location} onChange={handleEditChange} />
-                  <input type="date" name="date" value={editForm.date} onChange={handleEditChange} />
-                  <textarea name="description" value={editForm.description} onChange={handleEditChange} />
+          <div className="app-title">My Requests</div>
 
-                  <button onClick={saveEdit}>Save</button>
-                </>
-              ) : (
-                <>
-                  <h3>{req.title}</h3>
-                  <p>{req.description}</p>
-                  <p><b>Location:</b> {req.location}</p>
-                  <p><b>Date:</b> {req.date}</p>
+          {requests.length === 0 ? (
+            <p>No requests yet</p>
+          ) : (
+            <div className="requests-grid">
+              {requests.map((req) => (
+                <div key={req.id} className="card">
 
-                  <button onClick={() => startEdit(req)}>Edit</button>
-                  <button onClick={() => deleteRequest(req.id)}>Delete</button>
-                </>
-              )}
+                  {editingId === req.id ? (
+                    /* ✏️ EDIT MODE */
+                    <>
+                      <input
+                        name="title"
+                        value={editForm.title}
+                        onChange={handleEditChange}
+                      />
+
+                      <input
+                        name="location"
+                        value={editForm.location}
+                        onChange={handleEditChange}
+                      />
+
+                      <div className="row">
+                        <input
+                          type="date"
+                          name="startDate"
+                          value={editForm.startDate}
+                          onChange={handleEditChange}
+                        />
+                        <input
+                          type="date"
+                          name="endDate"
+                          value={editForm.endDate}
+                          onChange={handleEditChange}
+                        />
+                      </div>
+
+                      <div className="row">
+                        <input
+                          type="time"
+                          name="startTime"
+                          value={editForm.startTime}
+                          onChange={handleEditChange}
+                        />
+                        <input
+                          type="time"
+                          name="endTime"
+                          value={editForm.endTime}
+                          onChange={handleEditChange}
+                        />
+                      </div>
+
+                      <textarea
+                        name="description"
+                        value={editForm.description}
+                        onChange={handleEditChange}
+                      />
+
+                      <button
+                        onClick={saveEdit}
+                        className="primary-btn"
+                      >
+                        Save
+                      </button>
+                    </>
+                  ) : (
+                    /* 👀 VIEW MODE */
+                    <>
+                      <h3 className="card-title">{req.title}</h3>
+                      <p>{req.description}</p>
+
+                      <p><b>📍 Location:</b> {req.location}</p>
+
+                      <p>
+                        <b>📅 Start:</b> {req.startDate} at {req.startTime}
+                      </p>
+
+                      <p>
+                        <b>📅 End:</b> {req.endDate} at {req.endTime}
+                      </p>
+
+                      <div className="card-buttons">
+                        <button
+                          onClick={() => startEdit(req)}
+                          className="secondary-btn"
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          onClick={() => deleteRequest(req.id)}
+                          className="danger-btn"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </>
+                  )}
+
+                </div>
+              ))}
             </div>
-          ))
-        )}
+          )}
+        </div>
       </div>
     </>
   );
 }
 
 export default ViewRequests;
-

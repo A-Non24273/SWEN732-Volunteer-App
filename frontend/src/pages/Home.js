@@ -17,24 +17,51 @@ function Home() {
         <div className="header-left">User: {userId}</div>
 
         <div className="header-center">
-          <span onClick={() => navigate("/home")}>Home</span>
-          <span>About Us</span>
-          <span>Contact Us</span>
+          <span
+            className="cursor-pointer hover:text-blue-600"
+            onClick={() => navigate("/home")}
+          >
+            Home
+          </span>
+         
+          <span onClick={() => navigate("/about")}>About Us</span>
+       
+          <span className="cursor-pointer hover:text-blue-600">
+            Contact Us
+          </span>
         </div>
 
         <div className="header-right">
-          <button onClick={handleLogout}>Logout</button>
+          <button
+            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
         </div>
       </div>
 
       {/* MAIN CONTENT */}
-      <div className="container page">
-        <div className="app-title">🤝 Helping Hands</div>
-        <div className="tagline">Making a difference together</div>
+      <div className="page flex items-center justify-center min-h-[80vh]">
+        <div className="container text-center">
+          <div className="app-title">🤝 Helping Hands</div>
+          <div className="tagline">Making a difference together</div>
 
-        <div className="button-group">
-          <button onClick={() => navigate("/post")}>Post Request</button>
-          <button onClick={() => navigate("/requests")}>View Requests</button>
+          <div className="button-group mt-6">
+            <button
+              className="primary-btn"
+              onClick={() => navigate("/post")}
+            >
+              Post Request
+            </button>
+
+            <button
+              className="primary-btn bg-blue-600 hover:bg-blue-700"
+              onClick={() => navigate("/requests")}
+            >
+              View Requests
+            </button>
+          </div>
         </div>
       </div>
     </>

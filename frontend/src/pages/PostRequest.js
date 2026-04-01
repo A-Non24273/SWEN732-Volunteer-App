@@ -10,7 +10,10 @@ function PostRequest() {
     title: "",
     description: "",
     location: "",
-    date: ""
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: ""
   });
 
   const handleChange = (e) => {
@@ -46,7 +49,9 @@ function PostRequest() {
 
         <div className="header-center">
           <span onClick={() => navigate("/home")}>Home</span>
-          <span>About Us</span>
+         
+            <span onClick={() => navigate("/about")}>About Us</span>
+        
           <span>Contact Us</span>
         </div>
 
@@ -63,21 +68,31 @@ function PostRequest() {
 
         <div className="app-title">Post Request</div>
 
-        <form onSubmit={handleSubmit}>
-          <input name="title" value={form.title} placeholder="Title" onChange={handleChange} required />
-          <input name="location" value={form.location} placeholder="Location" onChange={handleChange} required />
-          <input type="date" name="date" value={form.date} onChange={handleChange} required />
+          <form onSubmit={handleSubmit} className="form">
+            <input name="title" value={form.title} placeholder="Title" onChange={handleChange} required />
 
-          <textarea
-            name="description"
-            value={form.description}
-            placeholder="Description"
-            onChange={handleChange}
-            style={{ width: "92%", padding: "10px", borderRadius: "6px" }}
-          />
+            <input name="location" value={form.location} placeholder="Location" onChange={handleChange} required />
 
-          <button type="submit">Post</button>
-        </form>
+            <div className="row">
+              <input type="date" name="startDate" value={form.startDate} onChange={handleChange} required />
+              <input type="date" name="endDate" value={form.endDate} onChange={handleChange} required />
+            </div>
+
+            <div className="row">
+              <input type="time" name="startTime" value={form.startTime} onChange={handleChange} required />
+              <input type="time" name="endTime" value={form.endTime} onChange={handleChange} required />
+            </div>
+
+            <textarea
+              name="description"
+              value={form.description}
+              placeholder="Description"
+              onChange={handleChange}
+            />
+
+            <button type="submit" className="primary-btn">Post</button>
+          </form>
+
       </div>
     </>
   );
