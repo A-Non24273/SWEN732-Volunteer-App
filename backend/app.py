@@ -129,6 +129,7 @@ def create_app():
     @app.route("/listing", methods=["PUT"])
     @login_required
     def update_listing():
+        from datetime import UTC
         data = request.get_json()
         
         listing_id = data.get("listing_id")
@@ -151,7 +152,7 @@ def create_app():
             "start_time": datetime.strptime(data.get("start_time"), format_pattern) if data.get("start_time") else listing.start_time,
             "end_time": datetime.strptime(data.get("end_time"), format_pattern) if data.get("end_time") else listing.end_time,
             "status": data.get("status") if data.get("status") else listing.status,
-            "updated_at": datetime.utcnow()
+            "updated_at": datetime.now(UTC)
         }
         db.session.query(Listing).filter(Listing.id == listing_id).update(new_listing_data)
         db.session.commit()
