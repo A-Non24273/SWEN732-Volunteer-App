@@ -23,9 +23,11 @@ function Home() {
           >
             Home
           </span>
-         
-          <span onClick={() => navigate("/about")}>About Us</span>
-       
+
+          <span onClick={() => navigate("/about")}>
+            About Us
+          </span>
+
           <span className="cursor-pointer hover:text-blue-600">
             Contact Us
           </span>
@@ -43,11 +45,14 @@ function Home() {
 
       {/* MAIN CONTENT */}
       <div className="page flex items-center justify-center min-h-[80vh]">
-        <div className="container text-center">
+
+        {/* ✅ USE NEW CLASS (NOT container) */}
+        <div className="home-card text-center">
           <div className="app-title">🤝 Helping Hands</div>
           <div className="tagline">Making a difference together</div>
 
-          <div className="button-group mt-6">
+          {/* ✅ FIXED BUTTON GROUP */}
+          <div className="btn-group mt-6">
             <button
               className="primary-btn"
               onClick={() => navigate("/post")}
@@ -56,13 +61,14 @@ function Home() {
             </button>
 
             <button
-              className="primary-btn bg-blue-600 hover:bg-blue-700"
+              className="primary-btn"
               onClick={() => navigate("/requests")}
             >
               View Requests
             </button>
           </div>
         </div>
+
       </div>
     </>
   );
