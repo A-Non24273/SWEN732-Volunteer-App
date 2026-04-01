@@ -27,13 +27,24 @@ function PostRequest() {
 
     const newRequest = {
       id: Date.now(),
-      ...form
+      ...form,
+      createdBy: userId // ✅ ownership added
     };
 
     localStorage.setItem("requests", JSON.stringify([...existing, newRequest]));
 
     alert("Request Posted!");
-    setForm({ title: "", description: "", location: "", date: "" });
+
+    // ✅ reset form correctly
+    setForm({
+      title: "",
+      description: "",
+      location: "",
+      startDate: "",
+      endDate: "",
+      startTime: "",
+      endTime: ""
+    });
   };
 
   const handleLogout = () => {
@@ -49,9 +60,7 @@ function PostRequest() {
 
         <div className="header-center">
           <span onClick={() => navigate("/home")}>Home</span>
-         
-            <span onClick={() => navigate("/about")}>About Us</span>
-        
+          <span onClick={() => navigate("/about")}>About Us</span>
           <span>Contact Us</span>
         </div>
 
@@ -68,31 +77,68 @@ function PostRequest() {
 
         <div className="app-title">Post Request</div>
 
-          <form onSubmit={handleSubmit} className="form">
-            <input name="title" value={form.title} placeholder="Title" onChange={handleChange} required />
+        <form onSubmit={handleSubmit} className="form">
+          <input
+            name="title"
+            value={form.title}
+            placeholder="Title"
+            onChange={handleChange}
+            required
+          />
 
-            <input name="location" value={form.location} placeholder="Location" onChange={handleChange} required />
+          <input
+            name="location"
+            value={form.location}
+            placeholder="Location"
+            onChange={handleChange}
+            required
+          />
 
-            <div className="row">
-              <input type="date" name="startDate" value={form.startDate} onChange={handleChange} required />
-              <input type="date" name="endDate" value={form.endDate} onChange={handleChange} required />
-            </div>
-
-            <div className="row">
-              <input type="time" name="startTime" value={form.startTime} onChange={handleChange} required />
-              <input type="time" name="endTime" value={form.endTime} onChange={handleChange} required />
-            </div>
-
-            <textarea
-              name="description"
-              value={form.description}
-              placeholder="Description"
+          <div className="row">
+            <input
+              type="date"
+              name="startDate"
+              value={form.startDate}
               onChange={handleChange}
+              required
             />
+            <input
+              type="date"
+              name="endDate"
+              value={form.endDate}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-            <button type="submit" className="primary-btn">Post</button>
-          </form>
+          <div className="row">
+            <input
+              type="time"
+              name="startTime"
+              value={form.startTime}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="time"
+              name="endTime"
+              value={form.endTime}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
+          <textarea
+            name="description"
+            value={form.description}
+            placeholder="Description"
+            onChange={handleChange}
+          />
+
+          <button type="submit" className="primary-btn">
+            Post
+          </button>
+        </form>
       </div>
     </>
   );

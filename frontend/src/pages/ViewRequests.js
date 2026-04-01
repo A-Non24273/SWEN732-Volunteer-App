@@ -16,7 +16,8 @@ function ViewRequests() {
     startDate: "",
     endDate: "",
     startTime: "",
-    endTime: ""
+    endTime: "",
+    createdBy: ""
   });
 
   useEffect(() => {
@@ -29,13 +30,27 @@ function ViewRequests() {
     navigate("/");
   };
 
+  // ✅ DELETE WITH AUTH CHECK
   const deleteRequest = (id) => {
+    const requestToDelete = requests.find((r) => r.id === id);
+
+    if (requestToDelete.createdBy !== userId) {
+      alert("You are not allowed to delete this request");
+      return;
+    }
+
     const updated = requests.filter((r) => r.id !== id);
     localStorage.setItem("requests", JSON.stringify(updated));
     setRequests(updated);
   };
 
+  // ✅ START EDIT WITH AUTH CHECK
   const startEdit = (req) => {
+    if (req.createdBy !== userId) {
+      alert("You are not allowed to edit this request");
+      return;
+    }
+
     setEditingId(req.id);
     setEditForm(req);
   };
@@ -44,7 +59,15 @@ function ViewRequests() {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
   };
 
+  // ✅ SAVE EDIT WITH AUTH CHECK
   const saveEdit = () => {
+    const requestToEdit = requests.find((r) => r.id === editingId);
+
+    if (requestToEdit.createdBy !== userId) {
+      alert("Unauthorized action");
+      return;
+    }
+
     const updated = requests.map((r) =>
       r.id === editingId ? editForm : r
     );
@@ -62,9 +85,7 @@ function ViewRequests() {
 
         <div className="header-center">
           <span onClick={() => navigate("/home")}>Home</span>
-
-            <span onClick={() => navigate("/about")}>About Us</span>
-         
+          <span onClick={() => navigate("/about")}>About Us</span>
           <span>Contact Us</span>
         </div>
 
@@ -167,21 +188,24 @@ function ViewRequests() {
                         <b>📅 End:</b> {req.endDate} at {req.endTime}
                       </p>
 
-                      <div className="card-buttons">
-                        <button
-                          onClick={() => startEdit(req)}
-                          className="secondary-btn"
-                        >
-                          Edit
-                        </button>
+                      {/* ✅ SHOW BUTTONS ONLY FOR OWNER */}
+                      {req.createdBy === userId && (
+                        <div className="card-buttons">
+                          <button
+                            onClick={() => startEdit(req)}
+                            className="secondary-btn"
+                          >
+                            Edit
+                          </button>
 
-                        <button
-                          onClick={() => deleteRequest(req.id)}
-                          className="danger-btn"
-                        >
-                          Delete
-                        </button>
-                      </div>
+                          <button
+                            onClick={() => deleteRequest(req.id)}
+                            className="danger-btn"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
                     </>
                   )}
 
