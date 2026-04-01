@@ -12,7 +12,7 @@ function About() {
 
   return (
     <>
-      {/* ✅ HEADER ADDED */}
+
       <div className="header">
         <div className="header-left">User: {userId}</div>
 
@@ -27,7 +27,7 @@ function About() {
         </div>
       </div>
 
-      {/* PAGE */}
+
       <div className="about-full">
 
         <h1 className="about-title">🤝 Helping Hands</h1>

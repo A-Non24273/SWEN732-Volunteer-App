@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* GLOBAL */
+
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
@@ -11,7 +11,7 @@ body {
   position: relative;
 }
 
-/* DARK OVERLAY */
+
 body::before {
   content: "";
   position: fixed;
@@ -20,13 +20,13 @@ body::before {
   z-index: -1;
 }
 
-/* PAGE */
+
 .page {
   margin-top: 100px;
   padding: 20px;
 }
 
-/* CONTAINER (FOR FORMS ONLY) */
+
 .container {
   max-width: 500px;
   margin: 0 auto;
@@ -39,7 +39,7 @@ body::before {
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-/* HEADER */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -62,7 +62,7 @@ body::before {
 
 .header-right {}
 
-/* TITLE */
+
 .app-title {
   font-size: 26px;
   font-weight: bold;
@@ -70,7 +70,7 @@ body::before {
   color: #73767c;
 }
 
-/* FORM */
+
 .form {
   display: flex;
   flex-direction: column;
@@ -93,7 +93,7 @@ body::before {
   box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
 }
 
-/* DATE/TIME ROW */
+
 .row {
   display: flex;
   gap: 10px;
@@ -103,7 +103,7 @@ body::before {
   flex: 1;
 }
 
-/* BUTTONS */
+
 .primary-btn {
   padding: 12px;
   border-radius: 10px;
@@ -132,7 +132,7 @@ body::before {
   color: white;
 }
 
-/* BACK BUTTON */
+
 .back-btn {
   margin-bottom: 20px;
   background: #2563eb;
@@ -141,14 +141,14 @@ body::before {
   border-radius: 8px;
 }
 
-/* GRID */
+
 .requests-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
-/* CARD */
+
 .card {
   background: white;
   color: #1e293b;
@@ -175,7 +175,7 @@ body::before {
   font-size: 14px;
 }
 
-/* CARD BUTTONS */
+
 .card-buttons {
   display: flex;
   gap: 10px;
@@ -186,7 +186,7 @@ body::before {
   flex: 1;
 }
 
-/* HOME CARD (🔥 FIX FOR YOUR ISSUE) */
+
 .home-card {
   max-width: 500px;
   margin: 0 auto;
@@ -208,7 +208,7 @@ body::before {
   color: #1e293b;
 }
 
-/* BUTTON GROUP */
+
 .btn-group {
   display: flex;
   justify-content: center;
@@ -216,7 +216,7 @@ body::before {
   margin-top: 20px;
 }
 
-/* ABOUT PAGE */
+
 .about-full {
   position: relative;
   min-height: 100vh;
@@ -286,14 +286,14 @@ body::before {
   margin-bottom: 8px;
 }
 
-/* FOOTER */
+
 .about-footer {
   margin-top: 30px;
   font-weight: 500;
   color: #e2e8f0;
 }
 
-/* LOGIN */
+
 .login-wrapper {
   height: 100vh;
   display: flex;
@@ -354,7 +354,7 @@ body::before {
   text-decoration: underline;
 }
 
-/* FIELD LABELS */
+
 .field {
   display: flex;
   flex-direction: column;

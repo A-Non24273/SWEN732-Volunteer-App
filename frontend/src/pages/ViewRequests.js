@@ -30,7 +30,7 @@ function ViewRequests() {
     navigate("/");
   };
 
-  // ✅ DELETE WITH AUTH CHECK
+
   const deleteRequest = (id) => {
     const requestToDelete = requests.find((r) => r.id === id);
 
@@ -44,7 +44,7 @@ function ViewRequests() {
     setRequests(updated);
   };
 
-  // ✅ START EDIT WITH AUTH CHECK
+
   const startEdit = (req) => {
     if (req.createdBy !== userId) {
       alert("You are not allowed to edit this request");
@@ -59,7 +59,7 @@ function ViewRequests() {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
   };
 
-  // ✅ SAVE EDIT WITH AUTH CHECK
+
   const saveEdit = () => {
     const requestToEdit = requests.find((r) => r.id === editingId);
 
@@ -79,7 +79,7 @@ function ViewRequests() {
 
   return (
     <>
-      {/* HEADER */}
+
       <div className="header">
         <div className="header-left">User: {userId}</div>
 
@@ -94,7 +94,7 @@ function ViewRequests() {
         </div>
       </div>
 
-      {/* PAGE */}
+
       <div className="page">
         <div className="max-w-6xl mx-auto">
 
@@ -115,7 +115,7 @@ function ViewRequests() {
                 <div key={req.id} className="card">
 
                   {editingId === req.id ? (
-                    /* ✏️ EDIT MODE */
+
                     <>
                       <input
                         name="title"
@@ -129,7 +129,7 @@ function ViewRequests() {
                         onChange={handleEditChange}
                       />
 
-                      {/* ✅ DATE LABELS */}
+
                       <div className="row">
                         <div className="field">
                           <label>Start Date</label>
@@ -152,7 +152,7 @@ function ViewRequests() {
                         </div>
                       </div>
 
-                      {/* ✅ TIME LABELS */}
+
                       <div className="row">
                         <div className="field">
                           <label>Start Time</label>
@@ -189,7 +189,7 @@ function ViewRequests() {
                       </button>
                     </>
                   ) : (
-                    /* 👀 VIEW MODE */
+
                     <>
                       <h3 className="card-title">{req.title}</h3>
                       <p>{req.description}</p>
@@ -204,7 +204,6 @@ function ViewRequests() {
                         <b>📅 End:</b> {req.endDate} at {req.endTime}
                       </p>
 
-                      {/* ✅ ONLY OWNER CAN SEE BUTTONS */}
                       {req.createdBy === userId && (
                         <div className="card-buttons">
                           <button

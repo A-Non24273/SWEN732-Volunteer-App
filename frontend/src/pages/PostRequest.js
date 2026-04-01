@@ -53,7 +53,7 @@ function PostRequest() {
 
   return (
     <>
-      {/* HEADER */}
+
       <div className="header">
         <div className="header-left">User: {userId}</div>
 
@@ -68,7 +68,7 @@ function PostRequest() {
         </div>
       </div>
 
-      {/* PAGE */}
+
       <div className="container page">
         <button className="back-btn" onClick={() => navigate("/home")}>
           ← Back
@@ -93,7 +93,7 @@ function PostRequest() {
             required
           />
 
-          {/* ✅ DATE FIELDS WITH LABELS */}
+
           <div className="row">
             <div className="field">
               <label>Start Date</label>
@@ -118,7 +118,7 @@ function PostRequest() {
             </div>
           </div>
 
-          {/* ✅ TIME FIELDS WITH LABELS */}
+
           <div className="row">
             <div className="field">
               <label>Start Time</label>

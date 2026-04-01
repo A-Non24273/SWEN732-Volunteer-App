@@ -14,7 +14,7 @@ function Register() {
       return;
     }
 
-    // Save user in localStorage
+
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
     const exists = users.find((u) => u.username === username);

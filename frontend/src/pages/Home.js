@@ -12,7 +12,7 @@ function Home() {
 
   return (
     <>
-      {/* HEADER */}
+
       <div className="header">
         <div className="header-left">User: {userId}</div>
 
@@ -43,15 +43,14 @@ function Home() {
         </div>
       </div>
 
-      {/* MAIN CONTENT */}
+
       <div className="page flex items-center justify-center min-h-[80vh]">
 
-        {/* ✅ USE NEW CLASS (NOT container) */}
+
         <div className="home-card text-center">
           <div className="app-title">🤝 Helping Hands</div>
           <div className="tagline">Making a difference together</div>
 
-          {/* ✅ FIXED BUTTON GROUP */}
           <div className="btn-group mt-6">
             <button
               className="primary-btn"
