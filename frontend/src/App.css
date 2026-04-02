@@ -29,7 +29,7 @@ body::before {
 
 .container {
   max-width: 500px;
-  margin: 0 auto;
+  margin: 120px auto 0; 
   padding: 24px;
 
   border-radius: 16px;
@@ -40,7 +40,7 @@ body::before {
 }
 
 
-/* HEADER */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -51,7 +51,7 @@ body::before {
   background: rgba(0, 0, 0, 0.7);
   color: white;
 
-  position: fixed;   /* 🔥 KEY FIX */
+  position: fixed;  
   top: 0;
   left: 0;
   width: 100%;
@@ -61,20 +61,20 @@ body::before {
   backdrop-filter: blur(8px);
 }
 
-/* LEFT */
+
 .header-left {
   font-weight: bold;
   font-size: 14px;
 }
 
-/* CENTER NAV */
+
 .header-center {
   display: flex;
   gap: 30px;
   align-items: center;
 }
 
-/* NAV ITEMS */
+
 .header-center span {
   cursor: pointer;
   padding: 6px 12px;
@@ -86,7 +86,7 @@ body::before {
   background: rgba(255, 255, 255, 0.15);
 }
 
-/* RIGHT */
+
 .header-right button {
   padding: 6px 12px;
   border-radius: 6px;
@@ -239,7 +239,7 @@ body::before {
 
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 
-  transform: translateY(-60px); /* 🔥 fixes HELP overlap */
+  transform: translateY(-60px); 
 }
 
 .home-card .app-title {
