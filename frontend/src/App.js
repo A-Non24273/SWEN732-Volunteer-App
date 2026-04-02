@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import PostRequest from "./pages/PostRequest";
 import ViewRequests from "./pages/ViewRequests";
 import About from "./pages/About";
-
+import Contact from "./pages/Contact";
 
 function App() {
   return (
@@ -15,13 +15,11 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
 
-        {/* NEW PAGES */}
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+
         <Route path="/post" element={<PostRequest />} />
         <Route path="/requests" element={<ViewRequests />} />
-
-        <Route path="/about" element={<About />} />
-
-        
       </Routes>
     </BrowserRouter>
   );
