@@ -220,7 +220,7 @@ body::before {
 .about-full {
   position: relative;
   min-height: 100vh;
-  padding: 100px 20px 40px;
+  padding: 10px 20px 40px;
 
   display: flex;
   flex-direction: column;
@@ -396,4 +396,71 @@ body::before {
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+
+.contact-full {
+  position: relative;
+  min-height: 100vh;
+
+  padding: 80px 20px 40px; 
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  color: white;
+}
+
+.contact-full::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65); 
+  z-index: 0;
+}
+
+.contact-full > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+.contact-section {
+  max-width: 500px;
+  width: 100%;
+  margin-bottom: 30px; 
+
+  background: rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  border-radius: 12px;
+
+  backdrop-filter: blur(8px);
+}
+
+.contact-section h2 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.contact-section p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #e5e7eb;
+}
+
+.contact-section input,
+.contact-section textarea {
+  background: rgba(255, 255, 255, 0.9); 
+  color: #1e293b; 
+}
+
+.contact-section input::placeholder,
+.contact-section textarea::placeholder {
+  color: #64748b;
+}
+
+.about-title {
+  margin-bottom: 20px; 
 }

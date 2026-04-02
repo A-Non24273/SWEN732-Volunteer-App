@@ -96,7 +96,7 @@ function ViewRequests() {
         <div className="header-center">
           <span onClick={() => navigate("/home")}>Home</span>
           <span onClick={() => navigate("/about")}>About Us</span>
-          <span>Contact Us</span>
+          <span onClick={() => navigate("/contact")}>Contact Us</span>
         </div>
 
         <div className="header-right">
