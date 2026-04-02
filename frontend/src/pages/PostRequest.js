@@ -16,6 +16,8 @@ function PostRequest() {
     endTime: ""
   });
 
+  const [toast, setToast] = useState(""); // ✅ Toast state
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -33,8 +35,14 @@ function PostRequest() {
 
     localStorage.setItem("requests", JSON.stringify([...existing, newRequest]));
 
-    alert("Request Posted!");
+    // ✅ Show toast instead of alert
+    setToast("Request Posted Successfully!");
 
+    setTimeout(() => {
+      setToast("");
+    }, 3000);
+
+    // ✅ Reset form
     setForm({
       title: "",
       description: "",
@@ -53,7 +61,10 @@ function PostRequest() {
 
   return (
     <>
+      {/* ✅ TOAST */}
+      {toast && <div className="toast">{toast}</div>}
 
+      {/* HEADER */}
       <div className="header">
         <div className="header-left">User: {userId}</div>
 
@@ -68,7 +79,7 @@ function PostRequest() {
         </div>
       </div>
 
-
+      {/* PAGE */}
       <div className="container page">
         <button className="back-btn" onClick={() => navigate("/home")}>
           ← Back
@@ -93,7 +104,6 @@ function PostRequest() {
             required
           />
 
-
           <div className="row">
             <div className="field">
               <label>Start Date</label>
@@ -117,7 +127,6 @@ function PostRequest() {
               />
             </div>
           </div>
-
 
           <div className="row">
             <div className="field">

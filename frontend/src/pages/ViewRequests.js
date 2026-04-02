@@ -8,6 +8,8 @@ function ViewRequests() {
 
   const [requests, setRequests] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [toast, setToast] = useState(""); // ✅ NEW
+
   const [editForm, setEditForm] = useState({
     id: "",
     title: "",
@@ -25,29 +27,34 @@ function ViewRequests() {
     setRequests(stored);
   }, []);
 
+  const showToast = (msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(""), 3000);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("user_id");
     navigate("/");
   };
 
-
   const deleteRequest = (id) => {
     const requestToDelete = requests.find((r) => r.id === id);
 
     if (requestToDelete.createdBy !== userId) {
-      alert("You are not allowed to delete this request");
+      showToast("Not allowed to delete this request ❌");
       return;
     }
 
     const updated = requests.filter((r) => r.id !== id);
     localStorage.setItem("requests", JSON.stringify(updated));
     setRequests(updated);
-  };
 
+    showToast("Request deleted successfully 🗑️");
+  };
 
   const startEdit = (req) => {
     if (req.createdBy !== userId) {
-      alert("You are not allowed to edit this request");
+      showToast("Not allowed to edit this request ❌");
       return;
     }
 
@@ -59,12 +66,11 @@ function ViewRequests() {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
   };
 
-
   const saveEdit = () => {
     const requestToEdit = requests.find((r) => r.id === editingId);
 
     if (requestToEdit.createdBy !== userId) {
-      alert("Unauthorized action");
+      showToast("Unauthorized action ❌");
       return;
     }
 
@@ -75,10 +81,14 @@ function ViewRequests() {
     localStorage.setItem("requests", JSON.stringify(updated));
     setRequests(updated);
     setEditingId(null);
+
+    showToast("Request updated successfully ✏️");
   };
 
   return (
     <>
+      {/* ✅ TOAST */}
+      {toast && <div className="toast">{toast}</div>}
 
       <div className="header">
         <div className="header-left">User: {userId}</div>
@@ -93,7 +103,6 @@ function ViewRequests() {
           <button onClick={handleLogout}>Logout</button>
         </div>
       </div>
-
 
       <div className="page">
         <div className="max-w-6xl mx-auto">
@@ -115,7 +124,6 @@ function ViewRequests() {
                 <div key={req.id} className="card">
 
                   {editingId === req.id ? (
-
                     <>
                       <input
                         name="title"
@@ -128,7 +136,6 @@ function ViewRequests() {
                         value={editForm.location}
                         onChange={handleEditChange}
                       />
-
 
                       <div className="row">
                         <div className="field">
@@ -151,7 +158,6 @@ function ViewRequests() {
                           />
                         </div>
                       </div>
-
 
                       <div className="row">
                         <div className="field">
@@ -189,7 +195,6 @@ function ViewRequests() {
                       </button>
                     </>
                   ) : (
-
                     <>
                       <h3 className="card-title">{req.title}</h3>
                       <p>{req.description}</p>
