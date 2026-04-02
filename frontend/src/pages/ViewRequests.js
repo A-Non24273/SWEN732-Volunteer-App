@@ -8,7 +8,7 @@ function ViewRequests() {
 
   const [requests, setRequests] = useState([]);
   const [editingId, setEditingId] = useState(null);
-  const [toast, setToast] = useState(""); // ✅ NEW
+  const [toast, setToast] = useState(""); 
 
   const [editForm, setEditForm] = useState({
     id: "",
@@ -87,7 +87,7 @@ function ViewRequests() {
 
   return (
     <>
-      {/* ✅ TOAST */}
+
       {toast && <div className="toast">{toast}</div>}
 
       <div className="header">

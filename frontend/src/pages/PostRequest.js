@@ -16,7 +16,7 @@ function PostRequest() {
     endTime: ""
   });
 
-  const [toast, setToast] = useState(""); // ✅ Toast state
+  const [toast, setToast] = useState(""); 
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -35,14 +35,12 @@ function PostRequest() {
 
     localStorage.setItem("requests", JSON.stringify([...existing, newRequest]));
 
-    // ✅ Show toast instead of alert
     setToast("Request Posted Successfully!");
 
     setTimeout(() => {
       setToast("");
     }, 3000);
 
-    // ✅ Reset form
     setForm({
       title: "",
       description: "",
@@ -79,7 +77,6 @@ function PostRequest() {
         </div>
       </div>
 
-      {/* PAGE */}
       <div className="container page">
         <button className="back-btn" onClick={() => navigate("/home")}>
           ← Back
