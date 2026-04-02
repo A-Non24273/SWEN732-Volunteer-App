@@ -115,3 +115,14 @@ class VolunteerListing(db.Model):
         nullable=False,
         server_default=db.func.current_timestamp()
     )
+
+    def to_dict(self):
+        """
+            Converts the volunteer listing to a dict
+        """
+        return {
+            "user_id": self.user_id,
+            "listing_id": self.listing_id,
+            "status": self.status,
+            "applied_at": self.applied_at.isoformat() if self.applied_at else None
+        }

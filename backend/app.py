@@ -9,7 +9,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
-from schema import User, db, Listing, listing_status
+from schema import User, db, Listing, VolunteerListing
 
 format_pattern = "%d %B, %Y, %H:%M:%S" # for datetimes
 login_manager = LoginManager()
@@ -172,6 +172,100 @@ def create_app():
         listings = db.session.query(Listing).filter(Listing.status == status).all()
 
         return jsonify([listing.to_dict() for listing in listings]), 200
+    
+    @app.route("/volunteers", methods=["GET"])
+    @login_required
+    def get_volunteers():
+        """
+        Retreives all volunteers from a listing
+        """
+        data = request.get_json()
+
+        listing_id = data.get("listing_id")
+
+        # We don't care if any user can see the list of volunteers
+        # If we choose to change this, the check goes here
+
+        volunteers = db.session.query(VolunteerListing).filter(VolunteerListing.listing_id == listing_id).all()
+
+        return jsonify([volunteer.to_dict() for volunteer in volunteers]), 200
+
+    @app.route("/volunteers", methods=["POST"])
+    @login_required
+    def volunteer_signup():
+        """
+        Add a user to the waitlist of volunteers for a listing
+        """
+        data = request.get_json()
+
+        user_id = current_user.id
+
+        new_join = VolunteerListing(
+            user_id = user_id,
+            listing_id = data.get("listing_id")
+        )
+
+        db.session.add(new_join)
+        db.session.commit()
+        return {"message": "Volunteer signup successful"}, 200
+
+    @app.route("/volunteers", methods=["PUT"])
+    @login_required
+    def change_volunteer_status():
+        """
+        Change the status of a volunteer
+
+        If current user is owner of listing, they can approve/deny volunteers
+
+        If current user is a volunteer, they can withdraw, or unwithdraw
+        """
+        data = request.get_json()
+
+        user_id = current_user.id
+
+        listing_id = data.get("listing_id")
+
+        listing = db.session.get(Listing, listing_id)
+
+        volunteers = db.session.query(VolunteerListing).filter(VolunteerListing.listing_id == listing_id).all()
+
+        # If user owns the listing
+        if listing.requester_id == user_id:
+            volunteer_id = data.get("volunteer_id")
+            new_status = data.get("status")
+
+            if not volunteer_id or not new_status:
+                return {"error": "volunteer_id and status are required"}, 400
+            
+            volunteer = db.session.query(VolunteerListing).filter(VolunteerListing.listing_id == listing_id, VolunteerListing.user_id == volunteer_id).first()
+
+            if not volunteer:
+                return {"error": "volunteer is not signed up for this listing"}, 400
+            
+            volunteer.status = new_status
+            db.session.commit()
+            return {"message": "Volunteer status updated successfully"}, 200
+        # Else if current user is a volunteer
+        elif any(volunteer.user_id == user_id for volunteer in volunteers):
+            volunteer = db.session.query(VolunteerListing).filter(VolunteerListing.listing_id == listing_id, VolunteerListing.user_id == user_id).first()
+
+            if not volunteer:
+                return {"error": "volunteer is not signed up for this listing"}, 400
+            
+            # If volunteer is withdrawing, they can only withdraw if they are currently approved or pending
+            if data.get("status") == "withdrawn" and volunteer.status not in ["approved", "pending"]:
+                return {"error": "volunteer cannot withdraw unless they are currently approved or pending"}, 400
+            
+            # If volunteer is unwithdrawing, they can only unwithdraw if they are currently withdrawn
+            if data.get("status") == "pending" and volunteer.status != "withdrawn":
+                return {"error": "volunteer cannot unwithdraw unless they are currently withdrawn"}, 400
+            
+            volunteer.status = data.get("status")
+            db.session.commit()
+            return {"message": "Volunteer status updated successfully"}, 200
+        else:
+            return {"error": "user is not a volunteer or owner of this listing"}, 401
+        
 
     return app
         
