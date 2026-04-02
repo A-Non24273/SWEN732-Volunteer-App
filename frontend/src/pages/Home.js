@@ -28,7 +28,8 @@ function Home() {
             About Us
           </span>
 
-          <span className="cursor-pointer hover:text-blue-600">
+        
+            <span onClick={() => navigate("/contact")}>
             Contact Us
           </span>
         </div>
