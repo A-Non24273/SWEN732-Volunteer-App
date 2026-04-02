@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; 
 import "../App.css";
 
 function Contact() {
   const navigate = useNavigate();
+  const location = useLocation(); 
   const userId = localStorage.getItem("user_id");
 
   const [form, setForm] = useState({
@@ -41,15 +42,43 @@ function Contact() {
 
   return (
     <>
-      {toast && <div className="toast">{toast}</div>}
-
       <div className="header">
         <div className="header-left">User: {userId}</div>
 
         <div className="header-center">
-          <span onClick={() => navigate("/home")}>Home</span>
-          <span onClick={() => navigate("/about")}>About Us</span>
-          <span onClick={() => navigate("/contact")}>Contact Us</span>
+          <span
+            onClick={() => navigate("/home")}
+            style={{
+              color: location.pathname === "/home" ? "#60a5fa" : "white"
+            }}
+          >
+            Home
+          </span>
+
+          <span
+            onClick={() => navigate("/about")}
+            style={{
+              color: location.pathname === "/about" ? "#60a5fa" : "white"
+            }}
+          >
+            About Us
+          </span>
+
+          <span
+            onClick={() => {
+              if (location.pathname === "/contact") {
+                window.location.reload();  
+              } else {
+                navigate("/contact");
+              }
+            }}
+            style={{
+              color: location.pathname === "/contact" ? "#60a5fa" : "white",
+              fontWeight: location.pathname === "/contact" ? "bold" : "normal"
+            }}
+          >
+            Contact Us
+          </span>
         </div>
 
         <div className="header-right">
@@ -57,12 +86,12 @@ function Contact() {
         </div>
       </div>
 
-      <div className="contact-full">
+      {toast && <div className="toast">{toast}</div>}
 
+      <div className="contact-full">
 
         <div className="about-title">📞 Contact Us</div>
 
-        {/* ✅ CONTACT DETAILS (glass style like About) */}
         <div className="contact-section">
           <h2>Get in Touch</h2>
           <p><b>📧 Email:</b> helpinghand@rit.edu</p>
@@ -70,7 +99,6 @@ function Contact() {
           <p><b>📍 Location:</b> Rochester Institute of Technology</p>
         </div>
 
-        {/* ✅ FORM SECTION */}
         <div className="contact-section">
           <h2>Send us a Message</h2>
 
