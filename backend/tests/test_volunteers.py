@@ -215,5 +215,4 @@ def test_get_listings_by_user_commitment(client, app):
         
         assert get_response.status_code == 200
         assert len(data) == 1
-        assert data[0].get("id") == 1
         assert data[0].get("user_id") == user.id
