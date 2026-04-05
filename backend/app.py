@@ -173,6 +173,18 @@ def create_app():
 
         return jsonify([listing.to_dict() for listing in listings]), 200
     
+    @app.route("/signedup", methods=["GET"])
+    @login_required
+    def get_listings_by_user_commitment():
+        """
+        Retreives all listings a volunteer has signedup for
+        """
+        user_id = current_user.id
+        
+        listings = db.session.query(VolunteerListing).filter(VolunteerListing.user_id == user_id).all()
+
+        return jsonify([listing.to_dict() for listing in listings]), 200
+    
     @app.route("/volunteers", methods=["GET"])
     @login_required
     def get_volunteers():
