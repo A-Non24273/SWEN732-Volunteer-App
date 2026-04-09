@@ -254,6 +254,9 @@ def create_app():
             if not volunteer:
                 return {"error": "volunteer is not signed up for this listing"}, 400
             
+            if new_status not in ["withdrawn", "approved", "rejected"]:
+                return {"error": "status must be approved, rejected, or withdrawn"}, 400
+
             volunteer.status = new_status
             db.session.commit()
             return {"message": "Volunteer status updated successfully"}, 200
