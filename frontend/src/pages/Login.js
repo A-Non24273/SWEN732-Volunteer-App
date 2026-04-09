@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/api";
 import "../App.css";
 
 function Login() {
@@ -8,25 +9,25 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+      const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    if (!username || !password) {
-      alert("Please enter username and password");
-      return;
-    }
+      if (!username || !password) {
+        alert("Please enter username and password");
+        return;
+      }
 
-    const foundUser = users.find(
-      (u) => u.username === username && u.password === password
-    );
+      const foundUser = users.find(
+        (u) => u.username === username && u.password === password
+      );
 
-    if (!foundUser) {
-      alert("User not found. Please create an account.");
-      return;
-    }
+      if (!foundUser) {
+        alert("User not found. Please create an account.");
+        return;
+      }
 
-    localStorage.setItem("user_id", username);
-    navigate("/home");
-  };
+      localStorage.setItem("user_id", username);
+      navigate("/home");
+    };
 
   return (
     <div className="login-wrapper">
