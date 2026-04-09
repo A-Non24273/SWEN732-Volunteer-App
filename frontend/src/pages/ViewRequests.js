@@ -17,6 +17,8 @@ function ViewRequests() {
 
   const [showVolunteerModal, setShowVolunteerModal] = useState(false);
 
+  const [filter, setFilter] = useState("all");
+
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("requests")) || [];
     setRequests(stored);
@@ -30,6 +32,35 @@ function ViewRequests() {
   const handleLogout = () => {
     localStorage.removeItem("user_id");
     navigate("/");
+  };
+
+  const markCompleted = (id) => {
+    const updated = requests.map((r) =>
+      r.id === id ? { ...r, status: "completed" } : r
+    );
+    localStorage.setItem("requests", JSON.stringify(updated));
+    setRequests(updated);
+    showToast("Event marked as completed ✅");
+  };
+
+  const getFilteredRequests = () => {
+    let data = [...requests];
+
+    if (filter === "recent") data = [...data].reverse();
+
+    if (filter === "upcoming") {
+      data = data.filter((r) => new Date(r.startDate) >= new Date());
+    }
+
+    if (filter === "completed") {
+      data = data.filter((r) => r.status === "completed");
+    }
+
+    if (filter === "mine") {
+      data = data.filter((r) => r.createdBy === userId);
+    }
+
+    return data;
   };
 
   const handleSignup = (listingId) => {
@@ -146,93 +177,57 @@ function ViewRequests() {
       <div className="page">
         <div className="max-w-6xl mx-auto">
 
-          <button className="back-btn" onClick={() => navigate("/home")}>
-            ← Back
-          </button>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <button className="back-btn" onClick={() => navigate("/home")}>
+              ← Back
+            </button>
+
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="filter-dropdown"
+            >
+              <option value="all">All Events</option>
+              <option value="recent">Recently Added</option>
+              <option value="upcoming">Upcoming Events</option>
+              <option value="completed">Completed Events</option>
+              <option value="mine">My Events</option>
+            </select>
+          </div>
 
           <div className="app-title">Requests</div>
 
           <div className="requests-grid">
-            {requests.map((req) => (
+            {getFilteredRequests().map((req) => (
               <div key={req.id} className="card">
 
-                {editingId === req.id ? (
-                  <div className="edit-form">
-
-                    <input
-                      name="title"
-                      value={editForm.title}
-                      onChange={handleEditChange}
-                      placeholder="Title"
-                      className="form-input"
-                    />
-
-                    <input
-                      name="location"
-                      value={editForm.location || ""}
-                      onChange={handleEditChange}
-                      placeholder="Location"
-                      className="form-input"
-                    />
-
-                    <div className="form-row">
-                      <input
-                        type="date"
-                        name="startDate"
-                        value={editForm.startDate || ""}
-                        onChange={handleEditChange}
-                        className="form-input"
-                      />
-                      <input
-                        type="date"
-                        name="endDate"
-                        value={editForm.endDate || ""}
-                        onChange={handleEditChange}
-                        className="form-input"
-                      />
-                    </div>
-
-                    <div className="form-row">
-                      <input
-                        type="time"
-                        name="startTime"
-                        value={editForm.startTime || ""}
-                        onChange={handleEditChange}
-                        className="form-input"
-                      />
-                      <input
-                        type="time"
-                        name="endTime"
-                        value={editForm.endTime || ""}
-                        onChange={handleEditChange}
-                        className="form-input"
-                      />
-                    </div>
-
-                    <textarea
-                      name="description"
-                      value={editForm.description}
-                      onChange={handleEditChange}
-                      placeholder="Description"
-                      className="form-input"
-                    />
-
-                    <div className="edit-actions">
-                      <button onClick={saveEdit} className="primary-btn">
-                        Save
-                      </button>
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="secondary-btn"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-
+                {req.status === "completed" && (
+                  <div style={{ color: "green", marginBottom: "5px" }}>
+                    ✅ Completed
                   </div>
+                )}
+
+                {editingId === req.id ? (
+                  <div className="edit-form"></div>
                 ) : (
                   <>
-                    <h3>{req.title}</h3>
+                      
+                      <div className="card-header">
+                        <h3>{req.title}</h3>
+                      </div>
+
+                      {req.createdBy === userId && req.status !== "completed" && (
+                        <button
+                          className="complete-btn card-top-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            markCompleted(req.id);
+                          }}
+                        >
+                          Mark Completed
+                        </button>
+                      )}
+
                     <p>{req.description}</p>
 
                     <p><b>📍</b> {req.location}</p>
@@ -242,17 +237,9 @@ function ViewRequests() {
                     <div className="card-buttons">
                       {req.createdBy === userId ? (
                         <>
-                          <button onClick={(e) => { e.stopPropagation(); startEdit(req); }} className="secondary-btn">
-                            ✏️ Edit
-                          </button>
-
-                          <button onClick={(e) => { e.stopPropagation(); deleteRequest(req.id); }} className="danger-btn">
-                            🗑️ Delete
-                          </button>
-
-                          <button onClick={(e) => { e.stopPropagation(); viewVolunteers(req.id); }} className="primary-btn">
-                            👀 View Volunteers
-                          </button>
+                          <button onClick={(e) => { e.stopPropagation(); startEdit(req); }} className="secondary-btn">✏️ Edit</button>
+                          <button onClick={(e) => { e.stopPropagation(); deleteRequest(req.id); }} className="danger-btn">🗑️ Delete</button>
+                          <button onClick={(e) => { e.stopPropagation(); viewVolunteers(req.id); }} className="primary-btn">👀 View Volunteers</button>
                         </>
                       ) : (
                         (() => {
@@ -300,6 +287,7 @@ function ViewRequests() {
         </div>
       </div>
 
+      {/* 🔥 REMOVED BUTTON FROM MODAL */}
       {showVolunteerModal && (
         <div className="modal-overlay" onClick={() => setShowVolunteerModal(false)}>
           <div className="volunteer-modal" onClick={(e) => e.stopPropagation()}>
