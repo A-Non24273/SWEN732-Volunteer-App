@@ -16,14 +16,39 @@ function PostRequest() {
     endTime: ""
   });
 
-  const [toast, setToast] = useState(""); 
+  const [toast, setToast] = useState("");
+  const [toastType, setToastType] = useState("success");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const showToast = (msg, type = "success") => {
+    setToast(msg);
+    setToastType(type);
+    setTimeout(() => setToast(""), 3000);
+  };
+
+  const validate = () => {
+    const { startDate, endDate, startTime, endTime } = form;
+
+    if (startDate && endDate && startDate > endDate) {
+      showToast("⚠️ Start date must be before end date", "error");
+      return false;
+    }
+
+    if (startDate && endDate && startDate === endDate && startTime && endTime && startTime >= endTime) {
+      showToast("⚠️ Start time must be before end time on the same day", "error");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!validate()) return;
 
     const existing = JSON.parse(localStorage.getItem("requests")) || [];
 
@@ -35,11 +60,7 @@ function PostRequest() {
 
     localStorage.setItem("requests", JSON.stringify([...existing, newRequest]));
 
-    setToast("Request Posted Successfully!");
-
-    setTimeout(() => {
-      setToast("");
-    }, 3000);
+    showToast("Request Posted Successfully! 🎉", "success");
 
     setForm({
       title: "",
@@ -57,12 +78,20 @@ function PostRequest() {
     navigate("/");
   };
 
+  const dateError = form.endDate && form.startDate && form.endDate < form.startDate;
+  const timeError = form.startDate === form.endDate && form.endTime && form.startTime && form.endTime <= form.startTime;
+
   return (
     <>
-      
-      {toast && <div className="toast">{toast}</div>}
+      {toast && (
+        <div
+          className="toast"
+          style={toastType === "error" ? { backgroundColor: "#e53e3e" } : {}}
+        >
+          {toast}
+        </div>
+      )}
 
-      
       <div className="header">
         <div className="header-left">User: {userId}</div>
 
@@ -119,11 +148,19 @@ function PostRequest() {
                 type="date"
                 name="endDate"
                 value={form.endDate}
+                min={form.startDate || undefined}
                 onChange={handleChange}
                 required
+                style={dateError ? { borderColor: "red" } : {}}
               />
             </div>
           </div>
+
+          {dateError && (
+            <p style={{ color: "red", fontSize: "0.8rem", margin: "-8px 0 8px" }}>
+              ⚠️ End date must be after start date
+            </p>
+          )}
 
           <div className="row">
             <div className="field">
@@ -145,9 +182,16 @@ function PostRequest() {
                 value={form.endTime}
                 onChange={handleChange}
                 required
+                style={timeError ? { borderColor: "red" } : {}}
               />
             </div>
           </div>
+
+          {timeError && (
+            <p style={{ color: "red", fontSize: "0.8rem", margin: "-8px 0 8px" }}>
+              ⚠️ End time must be after start time on the same day
+            </p>
+          )}
 
           <textarea
             name="description"
