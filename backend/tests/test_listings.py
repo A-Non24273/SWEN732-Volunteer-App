@@ -145,7 +145,6 @@ def test_update_listing(client, app):
         )
         
         # Get the listing
-        # now get the listing
         get_response = client.get(
             "/listing",
             json={
@@ -256,3 +255,4 @@ def test_user_change_listing_not_owner(client, app):
         )
 
         assert update_response.status_code == 401
+        
