@@ -16,6 +16,7 @@ function ViewRequests() {
   const [editForm, setEditForm] = useState({});
 
   const [showVolunteerModal, setShowVolunteerModal] = useState(false);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
   const [filter, setFilter] = useState("all");
 
@@ -122,7 +123,7 @@ function ViewRequests() {
 
   const startEdit = (req) => {
     setEditingId(req.id);
-    setEditForm(req);
+    setEditForm({...req});
   };
 
   const handleEditChange = (e) => {
@@ -130,6 +131,18 @@ function ViewRequests() {
   };
 
   const saveEdit = () => {
+    const { startDate, endDate, startTime, endTime } = editForm;
+
+    if (startDate && endDate && startDate > endDate) {
+      showToast("⚠️ Start date must be before end date");
+      return;
+    }
+
+    if (startDate && endDate && startDate === endDate && startTime && endTime && startTime >= endTime) {
+      showToast("⚠️ Start time must be before end time on the same day");
+      return;
+    }
+
     const updated = requests.map((r) =>
       r.id === editingId ? editForm : r
     );
@@ -176,6 +189,13 @@ function ViewRequests() {
 
       <div className="page">
         <div className="max-w-6xl mx-auto">
+          <div style={{
+            background: "rgba(255,255,255,0.95)",
+            borderRadius: "16px",
+            padding: "24px",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
+            minHeight: "80vh"
+          }}>
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <button className="back-btn" onClick={() => navigate("/home")}>
@@ -208,7 +228,43 @@ function ViewRequests() {
                 )}
 
                 {editingId === req.id ? (
-                  <div className="edit-form"></div>
+                  <div className="edit-form">
+                    <input name="title" value={editForm.title || ""} onChange={handleEditChange} className="form-input" />
+                    <input name="location" value={editForm.location || ""} onChange={handleEditChange} className="form-input" />
+                    <textarea name="description" value={editForm.description || ""} onChange={handleEditChange} className="form-input" />
+                    <div className="form-row">
+                      <input type="date" name="startDate" value={editForm.startDate || ""} onChange={handleEditChange} className="form-input" />
+                      <input
+                        type="date"
+                        name="endDate"
+                        value={editForm.endDate || ""}
+                        onChange={handleEditChange}
+                        className="form-input"
+                        style={editForm.endDate && editForm.startDate && editForm.endDate < editForm.startDate ? { borderColor: "red" } : {}}
+                      />
+                    </div>
+                    {editForm.endDate && editForm.startDate && editForm.endDate < editForm.startDate && (
+                      <p style={{ color: "red", fontSize: "0.8rem", margin: "-8px 0 8px" }}>⚠️ End date must be after start date</p>
+                    )}
+                    <div className="form-row">
+                      <input type="time" name="startTime" value={editForm.startTime || ""} onChange={handleEditChange} className="form-input" />
+                      <input
+                        type="time"
+                        name="endTime"
+                        value={editForm.endTime || ""}
+                        onChange={handleEditChange}
+                        className="form-input"
+                        style={editForm.startDate === editForm.endDate && editForm.endTime && editForm.startTime && editForm.endTime <= editForm.startTime ? { borderColor: "red" } : {}}
+                      />
+                    </div>
+                    {editForm.startDate === editForm.endDate && editForm.endTime && editForm.startTime && editForm.endTime <= editForm.startTime && (
+                      <p style={{ color: "red", fontSize: "0.8rem", margin: "-8px 0 8px" }}>⚠️ End time must be after start time</p>
+                    )}
+                    <div className="edit-actions">
+                      <button onClick={saveEdit} className="primary-btn">Save</button>
+                      <button onClick={() => setEditingId(null)} className="secondary-btn">Cancel</button>
+                    </div>
+                  </div>
                 ) : (
                   <>
                       
@@ -233,14 +289,17 @@ function ViewRequests() {
                     <p><b>📍</b> {req.location}</p>
                     <p>📅 {req.startDate} → {req.endDate}</p>
                     <p>⏰ {req.startTime} → {req.endTime}</p>
+                    <p>👤 Posted by: <b>{req.createdBy}</b></p>
 
                     <div className="card-buttons">
                       {req.createdBy === userId ? (
                         <>
                           <button onClick={(e) => { e.stopPropagation(); startEdit(req); }} className="secondary-btn">✏️ Edit</button>
-                          <button onClick={(e) => { e.stopPropagation(); deleteRequest(req.id); }} className="danger-btn">🗑️ Delete</button>
+                          <button onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(req.id); }} className="danger-btn">🗑️ Delete</button>
                           <button onClick={(e) => { e.stopPropagation(); viewVolunteers(req.id); }} className="primary-btn">👀 View Volunteers</button>
                         </>
+                      ) : req.status === "completed" ? (
+                        <button className="danger-btn" disabled>🔒 Event Closed</button>
                       ) : (
                         (() => {
                           const status = getUserStatus(req.id);
@@ -284,10 +343,31 @@ function ViewRequests() {
               </div>
             ))}
           </div>
+          </div>
         </div>
       </div>
 
-      {/* 🔥 REMOVED BUTTON FROM MODAL */}
+      {confirmDeleteId && (
+        <div className="modal-overlay" onClick={() => setConfirmDeleteId(null)}>
+          <div className="volunteer-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Delete Event</h2>
+            <p style={{ margin: "12px 0 24px" }}>Are you sure you want to delete this event? This action cannot be undone.</p>
+            <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+              <button className="secondary-btn" onClick={() => setConfirmDeleteId(null)}>Cancel</button>
+              <button
+                className="danger-btn"
+                onClick={() => {
+                  deleteRequest(confirmDeleteId);
+                  setConfirmDeleteId(null);
+                }}
+              >
+                🗑️ Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {showVolunteerModal && (
         <div className="modal-overlay" onClick={() => setShowVolunteerModal(false)}>
           <div className="volunteer-modal" onClick={(e) => e.stopPropagation()}>
