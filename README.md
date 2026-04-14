@@ -1,5 +1,5 @@
 # SWEN732-Volunteer-App | Helping Hands
-[![codecov](https://codecov.io/github/A-Non24273/SWEN732-Volunteer-App/graph/badge.svg?token=00BJU5PDPU)](https://codecov.io/github/A-Non24273/SWEN732-Volunteer-App)
+[![codecov](https://codecov.io/github/A-Non24273/SWEN732-Volunteer-App/branch/main/graph/badge.svg?token=00BJU5PDPU)](https://codecov.io/github/A-Non24273/SWEN732-Volunteer-App)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
