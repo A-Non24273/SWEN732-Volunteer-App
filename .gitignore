@@ -13,3 +13,9 @@ node_modules/
 
 # VSCode
 .vscode
+
+# Coverage artifacts
+.coverage
+htmlcov.zip
+*/htmlcov/
+coverage.xml
