@@ -7,7 +7,7 @@ function Contact() {
   const location = useLocation(); 
   const userId = localStorage.getItem("user_id");
 
-  const unescapeHtml = (text) => text.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+  const unescapeHtml = (text) => text.replaceAll('&amp;', '&').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&quot;', '"').replaceAll('&#039;', "'");
 
   const [form, setForm] = useState({
     name: "",

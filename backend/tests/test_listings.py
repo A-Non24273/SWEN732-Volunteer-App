@@ -197,7 +197,6 @@ def test_get_listings_by_status_open(client, app):
                 "end_time": "21 April, 2026, 11:30:00",
             }
         )
-        data = listing_response.get_json()
         
         listing_response2 = client.post(
             "/listing",
