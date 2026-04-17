@@ -40,6 +40,8 @@ def test_volunteer_apply(client, app):
             "/login",
             json={"username": "bob", "password": "password456"}
         )
+        
+        assert login_response.status_code == 200
 
         # Now create a listing
         listing_response = client.post(
@@ -81,6 +83,8 @@ def test_volunteer_get(client, app):
             "/login",
             json={"username": "bob", "password": "password456"}
         )
+        
+        assert login_response.status_code == 200
 
         # Now create a listing
         listing_response = client.post(
@@ -129,6 +133,8 @@ def test_get_listings_by_user_commitment(client, app):
             json={"username": "bob", "password": "password456"}
         )
         
+        assert login_response.status_code == 200
+        
         listing_response = client.post(
             "/listing",
             json={
@@ -152,13 +158,13 @@ def test_get_listings_by_user_commitment(client, app):
                 "end_time": "21 April, 2026, 11:30:00",
             }
         )
-        data = listing_response2.get_json()
-        listing_id2 = data.get("listing_id")
         
         apply_response = client.post(
             "/volunteers",
             json={"listing_id": listing_id}
         )
+        
+        assert apply_response.status_code == 200
         
         # Get all VolunteerListings with with userid
         get_response = client.get(
@@ -189,6 +195,8 @@ def test_volunteer_approve(client, app):
             "/login",
             json={"username": "bob", "password": "password456"}
         )
+        
+        assert login_response.status_code == 200
 
         # Now create a listing
         listing_response = client.post(
@@ -221,9 +229,13 @@ def test_volunteer_approve(client, app):
             json={"listing_id": listing_id}
         )
         
+        assert apply_response.status_code == 200
+        
         # switch login to bob
         client.post("/logout")
         bob_login = client.post("/login", json={"username":"bob", "password":"password456"})
+        
+        assert bob_login.status_code == 200
 
         # approve alice as a volunteer
         volunteer_id = alice_id
@@ -250,6 +262,8 @@ def test_volunteer_reject(client, app):
             "/login",
             json={"username": "bob", "password": "password456"}
         )
+        
+        assert login_response.status_code == 200
 
         # Now create a listing
         listing_response = client.post(
@@ -282,9 +296,12 @@ def test_volunteer_reject(client, app):
             json={"listing_id": listing_id}
         )
         
+        assert apply_response.status_code == 200
+        
         # switch login to bob
         client.post("/logout")
         bob_login = client.post("/login", json={"username":"bob", "password":"password456"})
+        assert bob_login.status_code == 200
 
         # approve alice as a volunteer
         volunteer_id = alice_id
@@ -311,6 +328,8 @@ def test_volunteer_bad_status(client, app):
             "/login",
             json={"username": "bob", "password": "password456"}
         )
+        
+        assert login_response.status_code == 200
 
         # Now create a listing
         listing_response = client.post(
@@ -343,9 +362,12 @@ def test_volunteer_bad_status(client, app):
             json={"listing_id": listing_id}
         )
         
+        assert apply_response.status_code == 200
+        
         # switch login to bob
         client.post("/logout")
         bob_login = client.post("/login", json={"username":"bob", "password":"password456"})
+        assert bob_login.status_code == 200
 
         # approve alice as a volunteer
         volunteer_id = alice_id
@@ -371,6 +393,8 @@ def test_volunteer_withdraw(client, app):
             "/login",
             json={"username": "bob", "password": "password456"}
         )
+        
+        assert login_response.status_code == 200
 
         # Now create a listing
         listing_response = client.post(
@@ -402,6 +426,8 @@ def test_volunteer_withdraw(client, app):
             "/volunteers",
             json={"listing_id": listing_id}
         )
+
+        assert apply_response.status_code == 200
 
         # approve alice as a volunteer
         volunteer_id = alice_id
