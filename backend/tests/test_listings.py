@@ -198,7 +198,6 @@ def test_get_listings_by_status_open(client, app):
             }
         )
         data = listing_response.get_json()
-        listing_id = data.get("listing_id")
         
         listing_response2 = client.post(
             "/listing",
@@ -214,7 +213,7 @@ def test_get_listings_by_status_open(client, app):
         listing_id2 = data.get("listing_id")
         
         # Update status of listing 2
-        update_response = client.put(
+        _ = client.put(
             "/listing",
             json={"listing_id": listing_id2,
                   "status": "cancelled"}
