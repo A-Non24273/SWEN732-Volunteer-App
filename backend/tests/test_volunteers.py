@@ -64,7 +64,6 @@ def test_volunteer_apply(client, app):
             json={"listing_id": listing_id}
         )
         assert apply_response.status_code == 200
-        data = apply_response.get_json()
 
 def test_volunteer_get(client, app):
     """
@@ -148,7 +147,7 @@ def test_get_listings_by_user_commitment(client, app):
         data = listing_response.get_json()
         listing_id = data.get("listing_id")
         
-        listing_response2 = client.post(
+        _ = client.post(
             "/listing",
             json={
                 "title": "Test Listing 2",
