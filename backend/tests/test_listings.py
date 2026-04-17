@@ -39,6 +39,8 @@ def test_listing_create(client, app):
             "/login",
             json={"username": "bob", "password": "password456"}
         )
+        
+        assert login_response.status_code == 200
 
         # Now create a listing
         listing_response = client.post(
@@ -72,6 +74,8 @@ def test_listing_get(client, app):
             "/login",
             json={"username": "bob", "password": "password456"}
         )
+
+        assert login_response.status_code == 200
 
         # Now create a listing
         listing_response = client.post(
@@ -115,6 +119,8 @@ def test_update_listing(client, app):
             "/login",
             json={"username": "bob", "password": "password456"}
         )
+        
+        assert login_response.status_code == 200
 
         # Now create a listing
         listing_response = client.post(
@@ -178,6 +184,8 @@ def test_get_listings_by_status_open(client, app):
             "/login",
             json={"username": "bob", "password": "password456"}
         )
+        
+        assert login_response.status_code == 200
         
         listing_response = client.post(
             "/listing",
@@ -246,6 +254,8 @@ def test_user_change_listing_not_owner(client, app):
             "/login",
             json={"username": "bob", "password": "password456"}
         )
+        
+        assert login_response.status_code == 200
 
         # Try to edit the second user's listing
         update_response = client.put(

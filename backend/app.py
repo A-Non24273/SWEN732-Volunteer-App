@@ -35,7 +35,7 @@ def create_app():
         return User.query.get(int(user_id))
 
 
-    @app.route("/")
+    @app.route("/", methods=["GET"])
     def home():
         return {"message": "Flask connected to PostgreSQL successfully"}
 
