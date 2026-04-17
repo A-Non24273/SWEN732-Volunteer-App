@@ -1,6 +1,7 @@
 # SWEN732-Volunteer-App | Helping Hands
 [![codecov](https://codecov.io/github/A-Non24273/SWEN732-Volunteer-App/graph/badge.svg?token=00BJU5PDPU)](https://codecov.io/github/A-Non24273/SWEN732-Volunteer-App)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=A-Non24273_SWEN732-Volunteer-App&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=A-Non24273_SWEN732-Volunteer-App)
 
 # Project Overview
 The goal of this application is to create a platform that connects people who need assistance with volunteers who are willing to help within their community. The app aims to make volunteering more accessible while simplifying how individuals request and receive support.
