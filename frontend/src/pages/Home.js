@@ -5,6 +5,8 @@ function Home() {
   const navigate = useNavigate();
   const userId = localStorage.getItem("user_id");
 
+  const unescapeHtml = (text) => text.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+
   const handleLogout = () => {
     localStorage.removeItem("user_id");
     navigate("/");
@@ -14,7 +16,7 @@ function Home() {
     <>
 
       <div className="header">
-        <div className="header-left">User: {userId}</div>
+        <div className="header-left">User: {unescapeHtml(userId)}</div>
 
         <div className="header-center">
           <span

@@ -18,6 +18,10 @@ function ViewRequests() {
   const [showVolunteerModal, setShowVolunteerModal] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
+  const escapeHtml = (text) => text.replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+
+  const unescapeHtml = (text) => text.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+
   const [filter, setFilter] = useState("all");
 
   useEffect(() => {
@@ -143,8 +147,19 @@ function ViewRequests() {
       return;
     }
 
+    const sanitizedEditForm = {
+      ...editForm,
+      title: escapeHtml(editForm.title.trim()),
+      description: escapeHtml(editForm.description.trim()),
+      location: escapeHtml(editForm.location.trim()),
+      startDate: editForm.startDate.trim(),
+      endDate: editForm.endDate.trim(),
+      startTime: editForm.startTime.trim(),
+      endTime: editForm.endTime.trim()
+    };
+
     const updated = requests.map((r) =>
-      r.id === editingId ? editForm : r
+      r.id === editingId ? sanitizedEditForm : r
     );
     localStorage.setItem("requests", JSON.stringify(updated));
     setRequests(updated);
@@ -174,7 +189,7 @@ function ViewRequests() {
       {toast && <div className="toast">{toast}</div>}
 
       <div className="header">
-        <div className="header-left">User: {userId}</div>
+        <div className="header-left">User: {unescapeHtml(userId)}</div>
 
         <div className="header-center">
           <span onClick={() => navigate("/home")}>Home</span>
@@ -269,7 +284,7 @@ function ViewRequests() {
                   <>
                       
                       <div className="card-header">
-                        <h3>{req.title}</h3>
+                        <h3>{unescapeHtml(req.title)}</h3>
                       </div>
 
                       {req.createdBy === userId && req.status !== "completed" && (
@@ -284,9 +299,9 @@ function ViewRequests() {
                         </button>
                       )}
 
-                    <p>{req.description}</p>
+                    <p>{unescapeHtml(req.description)}</p>
 
-                    <p><b>📍</b> {req.location}</p>
+                    <p><b>📍</b> {unescapeHtml(req.location)}</p>
                     <p>📅 {req.startDate} → {req.endDate}</p>
                     <p>⏰ {req.startTime} → {req.endTime}</p>
                     <p>👤 Posted by: <b>{req.createdBy}</b></p>

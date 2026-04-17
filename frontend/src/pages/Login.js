@@ -8,16 +8,22 @@ function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const escapeHtml = (text) => text.replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+
   const handleLogin = () => {
       const users = JSON.parse(localStorage.getItem("users")) || [];
 
-      if (!username || !password) {
+      const trimmedUsername = username.trim();
+      const escapedUsername = escapeHtml(trimmedUsername);
+      const trimmedPassword = password.trim();
+
+      if (!trimmedUsername || !trimmedPassword) {
         alert("Please enter username and password");
         return;
       }
 
       const foundUser = users.find(
-        (u) => u.username === username && u.password === password
+        (u) => u.username === escapedUsername && u.password === trimmedPassword
       );
 
       if (!foundUser) {
@@ -25,7 +31,7 @@ function Login() {
         return;
       }
 
-      localStorage.setItem("user_id", username);
+      localStorage.setItem("user_id", escapedUsername);
       navigate("/home");
     };
 

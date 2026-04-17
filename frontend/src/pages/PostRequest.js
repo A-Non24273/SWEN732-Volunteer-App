@@ -6,6 +6,8 @@ function PostRequest() {
   const navigate = useNavigate();
   const userId = localStorage.getItem("user_id");
 
+  const unescapeHtml = (text) => text.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -18,6 +20,8 @@ function PostRequest() {
 
   const [toast, setToast] = useState("");
   const [toastType, setToastType] = useState("success");
+
+  const escapeHtml = (text) => text.replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -50,11 +54,22 @@ function PostRequest() {
 
     if (!validate()) return;
 
+    const sanitizedForm = {
+      ...form,
+      title: escapeHtml(form.title.trim()),
+      description: escapeHtml(form.description.trim()),
+      location: escapeHtml(form.location.trim()),
+      startDate: form.startDate.trim(),
+      endDate: form.endDate.trim(),
+      startTime: form.startTime.trim(),
+      endTime: form.endTime.trim()
+    };
+
     const existing = JSON.parse(localStorage.getItem("requests")) || [];
 
     const newRequest = {
       id: Date.now(),
-      ...form,
+      ...sanitizedForm,
       createdBy: userId
     };
 
@@ -93,7 +108,7 @@ function PostRequest() {
       )}
 
       <div className="header">
-        <div className="header-left">User: {userId}</div>
+        <div className="header-left">User: {unescapeHtml(userId)}</div>
 
         <div className="header-center">
           <span onClick={() => navigate("/home")}>Home</span>

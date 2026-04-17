@@ -8,8 +8,14 @@ function Register() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  const escapeHtml = (text) => text.replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+
   const handleRegister = () => {
-    if (!username || !password) {
+    const trimmedUsername = username.trim();
+    const escapedUsername = escapeHtml(trimmedUsername);
+    const trimmedPassword = password.trim();
+
+    if (!trimmedUsername || !trimmedPassword) {
       setMessage("Please fill all fields");
       return;
     }
@@ -17,14 +23,14 @@ function Register() {
 
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    const exists = users.find((u) => u.username === username);
+    const exists = users.find((u) => u.username === escapedUsername);
 
     if (exists) {
       setMessage("User already exists");
       return;
     }
 
-    users.push({ username, password });
+    users.push({ username: escapedUsername, password: trimmedPassword });
     localStorage.setItem("users", JSON.stringify(users));
 
     setMessage("Registered successfully!");

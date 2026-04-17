@@ -7,6 +7,8 @@ function Contact() {
   const location = useLocation(); 
   const userId = localStorage.getItem("user_id");
 
+  const unescapeHtml = (text) => text.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -43,7 +45,7 @@ function Contact() {
   return (
     <>
       <div className="header">
-        <div className="header-left">User: {userId}</div>
+        <div className="header-left">User: {unescapeHtml(userId)}</div>
 
         <div className="header-center">
           <span
