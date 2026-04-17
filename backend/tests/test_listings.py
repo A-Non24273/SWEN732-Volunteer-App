@@ -187,7 +187,7 @@ def test_get_listings_by_status_open(client, app):
         
         assert login_response.status_code == 200
         
-        listing_response = client.post(
+        _ = client.post(
             "/listing",
             json={
                 "title": "Test Listing 1",

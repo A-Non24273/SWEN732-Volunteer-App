@@ -8,7 +8,7 @@ function Register() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const escapeHtml = (text) => text.replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+  const escapeHtml = (text) => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 
   const handleRegister = () => {
     const trimmedUsername = username.trim();
