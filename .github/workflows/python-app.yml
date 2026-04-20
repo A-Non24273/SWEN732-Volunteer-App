@@ -3,8 +3,12 @@ name: Python application
 on:
   push:
     branches: ["main"]
+    tags:
+      - 'v*'
   pull_request:
     branches: ["main"]
+  release:
+    types: [created]
 
 permissions:
   contents: read
@@ -23,7 +27,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U postgres -d test_db"
+          --health-cmd="pg_isready -U postgres -d swen_732"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -63,8 +67,38 @@ jobs:
         working-directory: frontend
         run: npm install
 
-      - name: Run frontend (skip tests)
+      - name: Build frontend (skip if fails)
         working-directory: frontend
+        run: npm run build || echo "Build skipped"
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'release'
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        env:
+          CR_PAT: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "$CR_PAT" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Set lowercase image name
+        run: echo "IMAGE_NAME=ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        run: docker build -t $IMAGE_NAME:latest .
+
+      - name: Tag Docker image
+        run: docker tag $IMAGE_NAME:latest $IMAGE_NAME:${{ github.ref_name }}
+
+      - name: Push Docker image
         run: |
-          npm install
-          npm run build || echo "Build skipped"
+          docker push $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:${{ github.ref_name }}
